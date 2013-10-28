@@ -136,9 +136,10 @@ class OpenMeteoData {
     if (!$this->_run) throw new Exception("Run is not set");
   }
   
-  private function _openFirstFile() {
-    if (!array_key_exists(0, $this->_files)) {
-      $this->_files[0]=new OPeNDAP($this->_getFileUrl(), $this->_ck);
+  
+  private function _openFile($frame) {
+    if (!array_key_exists($frame, $this->_files)) {
+      $this->_files[$frame]=new OPeNDAP($this->_getFileUrl($frame), $this->_ck);
     }
   }
   
@@ -148,51 +149,47 @@ class OpenMeteoData {
   }
   
   public function getVariables () {
-    $this->_openFirstFile();
+    $this->_openFile(0);
     return $this->_files[0]->getVariables();
   }
   
-  public function getAttributes () {
-    $this->_openFirstFile();
-    return $this->_files[0]->getAttributes();
+  public function getAttributes ($frame=0) {
+    $this->_openFile($frame);
+    return $this->_files[$frame]->getAttributes();
   }
   
   public function getDimensions () {
-    $this->_openFirstFile();
+    $this->_openFile(0);
     return $this->_files[0]->getDimensions();
   }
   
   public function getTypes () {
-    $this->_openFirstFile();
+    $this->_openFile(0);
     return $this->_files[0]->getTypes();
   }
   
   public function getModelLevels () {
-    $this->_openFirstFile();
+    $this->_openFile(0);
     return $this->_files[0]->getArray('model_level');
   }
   
   public function getPressureLevels () {
-    $this->_openFirstFile();
+    $this->_openFile(0);
     return $this->_files[0]->getArray('press_level');
   }
   
   public function getAltitudeLevels () {
-    $this->_openFirstFile();
+    $this->_openFile(0);
     return $this->_files[0]->getArray('alti_level');
   }
   
   public function getArray ($var, $frame, $xsub=FALSE, $ysub=FALSE, $zsub=FALSE) {
-    if (!array_key_exists($frame, $this->_files)) {
-      $this->_files[$frame]=new OPeNDAP($this->_getFileUrl($frame), $this->_ck);
-    }
+    $this->_openFile($frame);
     return $this->_files[$frame]->getArray($var, $xsub, $ysub, $zsub);
   }
   
   public function getPoint ($var, $frame, $coords) {
-    if (!array_key_exists($frame, $this->_files)) {
-      $this->_files[$frame]=new OPeNDAP($this->_getFileUrl($frame), $this->_ck);
-    }
+    $this->_openFile($frame);
     $ncoords=count($coords);
     switch ($ncoords) {
       case 1:
@@ -279,7 +276,7 @@ class OpenMeteoData {
   private function _init_proj () {
     if ($this->_proj) return;
     
-    $this->_openFirstFile();
+    $this->_openFile(0);
     $atts = $this->getAttributes();
     
     if (!array_key_exists('Lambert_Conformal', $atts)) {

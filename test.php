@@ -3,7 +3,20 @@
 require("openmeteodata.class.php");
 
 $OMD = new OpenMeteoData ();
+
+/*
+We advise you to provide a contact email.
+This is not mandatory, but it can be really usefull
+in case we get a problem with your requests.
+That way, we will be able to contact you instead of
+blocking your IP in a dumb way.
+Your email will be kept secure, and is never transmitted
+to someone else
+We will email you only in case of a problem we need to solve.
+*/
 $OMD->setContactEmail('dsqdsq@sqdq.com');
+
+
 
 /*
 $domains=$OMD->getDomains();
@@ -13,11 +26,12 @@ print_r($domains);
 $OMD->setDomain('eu12');
 
 
-/*$runs=$OMD->getRuns();
-print_r($runs);*/
+$runs=$OMD->getRuns();
+print_r($runs);
 
 
-$OMD->setRun('2013102712');
+//$OMD->setRun('201310212');
+$OMD->setRun($runs[0]);
 
 /*
 $frames=$OMD->getFrames();
