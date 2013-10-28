@@ -67,6 +67,9 @@ class OpenMeteoData {
   }
   
   public function setDomain ($domain) {
+    if ($this->_domain) {
+      throw new Exception("Domain is allready set.");
+    }
     $this->_domain=$domain;
   }
 
@@ -84,6 +87,9 @@ class OpenMeteoData {
   }
 
   public function setRun ($run) {
+    if ($this->_run) {
+      throw new Exception("Run is allready set.");
+    }
     $this->_run=$run;
   }
   
