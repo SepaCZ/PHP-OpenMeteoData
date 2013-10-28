@@ -1,4 +1,10 @@
 <?php
+/*
+
+This scripts plot a simple map from OpenMeteoData forecasts.
+
+*/
+
 
 // --- get data from OpenMeteoData -------------------------
 require("openmeteodata.class.php");
@@ -100,6 +106,8 @@ for ($y=0; $y<$height; $y++) {
     }
   }
 }
+
+imagedestroy($countries_im);
 
 // ------ add legend -----------------------
 
